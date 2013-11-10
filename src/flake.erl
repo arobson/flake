@@ -23,6 +23,7 @@
 -export([
 	 start/0,
 	 start_link/0,
+	 start_link/1,
 	 stop/0,
 	 get_config_value/2
 	]).
@@ -35,6 +36,11 @@
 %% @doc Starts the app for inclusion in a supervisor tree
 start_link() ->
     flake_sup:start_link().
+
+%% @spec start_link() -> {ok,Pid::pid()}
+%% @doc Starts the app for inclusion in a supervisor tree
+start_link(WorkerId) ->
+    flake_sup:start_link(WorkerId).
 
 %% @spec start() -> ok
 %% @doc Start the snowflake server.
