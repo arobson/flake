@@ -25,7 +25,7 @@
 -behaviour(supervisor).
 
 %% External exports
--export([start_link/0, start_link/1, upgrade/0]).
+-export([start_link/0, upgrade/0]).
 
 %% supervisor callbacks
 -export([init/1]).
@@ -33,11 +33,7 @@
 %% @spec start_link() -> ServerRet
 %% @doc API for starting the supervisor.
 start_link() ->
-	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
-
-%% @spec start_link(WorkerId) -> ServerRet
-%% @doc API for starting the supervisor with custom Id
-start_link(WorkerId) ->
+	WorkerId = flake:get_config_value(worker_id, get_worker_id()),
 	supervisor:start_link({local, ?MODULE}, ?MODULE, [WorkerId]).
 
 %% @spec upgrade() -> ok

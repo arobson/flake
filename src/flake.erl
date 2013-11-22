@@ -22,8 +22,7 @@
 %%====================================================================
 -export([
 	 start/0,
-	 start_link/0,
-	 start_link/1,
+	 start/1,
 	 stop/0,
 	 get_config_value/2
 	]).
@@ -32,20 +31,16 @@
 
 -include_lib ("eunit/include/eunit.hrl").
 
-%% @spec start_link() -> {ok,Pid::pid()}
-%% @doc Starts the app for inclusion in a supervisor tree
-start_link() ->
-    flake_sup:start_link().
-
-%% @spec start_link() -> {ok,Pid::pid()}
-%% @doc Starts the app for inclusion in a supervisor tree
-start_link(WorkerId) ->
-    flake_sup:start_link(WorkerId).
-
 %% @spec start() -> ok
 %% @doc Start the snowflake server.
 start() ->
-    application:start(flake).
+	application:start(flake).
+
+%% @spec start() -> ok
+%% @doc Start the snowflake server.
+start(WorkerId) ->
+	application:set_env(flake, worker_id, WorkerId),
+	application:start(flake).
 
 %% @spec stop() -> ok
 %% @doc Stop the snowflake server.
@@ -55,6 +50,6 @@ stop() ->
 
 get_config_value(Key, Default) ->
     case application:get_env(flake, Key) of
-	{ok, Value} -> Value;
-	_ -> Default
+		{ok, Value} -> Value;
+		_ -> Default
     end.

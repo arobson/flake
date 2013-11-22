@@ -30,8 +30,10 @@
 
 %% @spec start(_Type, _StartArgs) -> ServerRet
 %% @doc application start callback for snowflake.
-start(_Type, _StartArgs) ->
-    flake_sup:start_link().
+start(_Type, []) ->
+    flake_sup:start_link();
+start(_Type, [WorkerId]) ->
+	flake_sup:start_link(WorkerId).
 
 %% @spec stop(_State) -> ServerRet
 %% @doc application stop callback for snowflake.
